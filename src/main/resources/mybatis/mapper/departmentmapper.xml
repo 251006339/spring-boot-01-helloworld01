@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hxm.dao.DepartmentMapper">
+
+    <!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.hxm.entity.Department" id="departmentMap">
+
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="departmentName" property="departmentName" jdbcType="VARCHAR" />
+        <collection property="employeeList" ofType="employee" column="id">
+            <id column="id" property="id"/><!-- 这里的column对应的是下面查询的别名，而不是表字段名 -->
+            <result column="" property="name"/><!-- property对应JavaBean中的属性名 -->
+            <result column="className" property="className"/>
+         </collection>
+
+
+
+    </resultMap>
+
+
+
+    <select id="selectDepartment" parameterType="INTEGER" resultType="com.hxm.entity.Department">
+        select *
+        from Department
+        where 1=1
+            and id = #{id,jdbcType=INTEGER}
+    </select>
+
+    <select id="selectDepartmentAndEmployee" parameterType="INTEGER" resultMap="departmentMap">
+        select *
+        from department d
+        join employee e
+        on  d.id=e.d_id
+        where 1=1
+            and d.id = #{id,jdbcType=INTEGER}
+    </select>
+
+</mapper>
